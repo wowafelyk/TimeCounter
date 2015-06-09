@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">TimeCounter</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="start">Пуск</string>
+    <string name="stop">Стоп</string>
+    <string name="lap_time">Час кола</string>
+    <string name="reset">Скинути</string>
+    <string-array name="timer_output">
+        <item>00:00:00</item>
+        <item>00:00:00.0</item>
+        <item>00:00:00.00</item>
+        <item>00:00:00.000</item>
+    </string-array>
 </resources>
