@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    android:id="@+id/scrollView"
+    android:minHeight="600dp">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fffffd2a"
-        tools:context=".Main">
+        tools:context=".Main"
+        android:id="@+id/">
 
         <Chronometer
             android:id="@+id/chronometer"
@@ -14,7 +21,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
             android:format="00:00:00"
-            android:textSize="36sp" />
+            android:textSize="36sp"
+            android:gravity="center_horizontal" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -30,14 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/Margin_16_dp"
                 android:layout_weight="0.5"
                 android:width="120dp"
                 android:height="70dp"
                 android:background="@drawable/button_background"
                 android:padding="5dp"
                 android:text="@string/start"
-                android:textSize="15sp"
-                android:layout_marginLeft="@dimen/Margin_16_dp" />
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/button_lap"
@@ -59,32 +67,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/Margin_16_dp"
                 android:layout_weight="0.5"
                 android:width="120dp"
                 android:height="70dp"
                 android:background="@drawable/button_background"
                 android:padding="5dp"
                 android:text="@string/reset"
-                android:textSize="15sp"
-                android:layout_marginRight="@dimen/Margin_16_dp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/linearLayout"
-        android:layout_centerInParent="true"
-        android:textFilterEnabled="false"
-        android:layout_margin="5dp"
-        android:background="#fffffd2a"
-        android:visibility="visible"
-        android:cacheColorHint="#fffffd2a"
-        android:scrollingCache="true"
-        android:layout_alignParentTop="false"
-        android:layout_alignParentLeft="false" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:layout_below="@+id/linearLayout"
+            android:background="#fffffd2a"
+            android:cacheColorHint="#fffffd2a"
+            android:scrollingCache="true"
+            android:textFilterEnabled="false"
+            android:visibility="visible"
+            android:scrollbarAlwaysDrawVerticalTrack="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp" />
 
-</RelativeLayout>
-
+    </RelativeLayout>
+</ScrollView>
 
 
