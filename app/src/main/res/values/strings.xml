@@ -1,6 +1,9 @@
 <resources>
+    <string name="pr_textcolor">TextColor</string>
+    <string name="pr_background_color">BackgroundColor</string>
+    <string name="pr_timer_output">BackgroundColor</string>
+
     <string name="app_name">TimeCounter</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="start">Пуск</string>
     <string name="stop">Стоп</string>
