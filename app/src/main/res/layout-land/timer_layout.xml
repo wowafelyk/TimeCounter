@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:background="#fffffd2a"
         tools:context=".Main"
-        android:id="@+id/">
+        android:id="@+id/realativLayout">
 
         <Chronometer
             android:id="@+id/chronometer"

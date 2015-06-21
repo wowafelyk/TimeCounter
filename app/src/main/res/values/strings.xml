@@ -6,6 +6,13 @@
     <string name="stop">Стоп</string>
     <string name="lap_time">Час кола</string>
     <string name="reset">Скинути</string>
+    <string name="scope">Масштаб</string>
+    <string name="time_output">Одиниці вимірюваня</string>
+    <string name="settings">Накстройки таймера</string>
+    <string name="color">Колір</string>
+    <string name="print">Шрифт</string>
+    <string name="apply">ОК</string>
+    <string name="cancel">Відмінити</string>
     <string-array name="timer_output">
         <item>00:00:00</item>
         <item>00:00:00.0</item>

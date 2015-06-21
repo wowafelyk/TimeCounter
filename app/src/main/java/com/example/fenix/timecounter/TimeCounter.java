@@ -23,7 +23,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Main extends AppCompatActivity {
+public class TimeCounter extends AppCompatActivity {
     private boolean isStarted = true;
     private Handler mHandler = new Handler();
     private Timer timer = new Timer();
