@@ -1,25 +1,46 @@
 <resources>
     <string name="pr_textcolor">TextColor</string>
     <string name="pr_background_color">BackgroundColor</string>
-    <string name="pr_timer_output">BackgroundColor</string>
+    <string name="pr_timer_output">PreferencesTimerOutput</string>
+    <string name="pr_color">Color</string>
+    <string name="bundle_baseTime">BaseT</string>
+
+    <string name="color_dialog_ARGB">ARGB</string>
+    <string name="color_dialog_Alfa">Насиченість кольору(ALfa)</string>
+    <string name="color_dialog_red">Червоний</string>
+    <string name="color_dialog_green">Зелений</string>
+    <string name="color_dialog_blue">Синій</string>
+
+
+
+
+
+    <string name="display">Настройки дисплею</string>
+    <string name="time_output">Формат таймера</string>
+    <string name="time_output_select">Вкажіть формат виводу таймера</string>
+    <string name="scope">Масштаб</string>
+    <string name="chronometer_size">Масштаб таймера</string>
+    <string name="chronometer_size_select">Вкажіть масштаб таймера</string>
+    <string name="color">Колір</string>
+    <string name="background_color">Колір фону</string>
+    <string name="text_color">Колір тексту</string>
+    <string name="color_select">Виберіть колір</string>
+
 
     <string name="app_name">TimeCounter</string>
-    <string name="action_settings">Settings</string>
     <string name="start">Пуск</string>
     <string name="stop">Стоп</string>
     <string name="lap_time">Час кола</string>
     <string name="reset">Скинути</string>
-    <string name="scope">Масштаб</string>
-    <string name="time_output">Одиниці вимірюваня</string>
+
     <string name="settings">Накстройки таймера</string>
-    <string name="color">Колір</string>
+
     <string name="print">Шрифт</string>
     <string name="apply">ОК</string>
     <string name="cancel">Відмінити</string>
-    <string-array name="timer_output">
-        <item>00:00:00</item>
-        <item>00:00:00.0</item>
-        <item>00:00:00.00</item>
-        <item>00:00:00.000</item>
-    </string-array>
+
+
+
+
+
 </resources>
