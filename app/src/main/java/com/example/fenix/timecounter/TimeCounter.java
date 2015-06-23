@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ListView;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,13 +32,14 @@ public class TimeCounter extends AppCompatActivity {
     private TimerTask timerTask;
     private Chronometer mChronometer;
     private SharedPreferences preferences;
-    private static final String TAG = "Time";
+    private DatabaseHandler database;
     private int msecond[] = {1000, 100, 10, 1};    //select start output timer
     private int timeoutput;
-    private int index=1;
-    private long Base = 0;
+    private int index=0;
+    private long base = 0;
+    private long stoptime;
     private ArrayAdapter<String> arrayAdapter;
-
+    public static final String TAG = "Time";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +55,21 @@ public class TimeCounter extends AppCompatActivity {
 
 
 
-        Log.d(TAG, Long.toString(Thread.currentThread().getId()));
 
+
+        Log.d(TAG, Long.toString(Thread.currentThread().getId())+" = Theread id");
+        database = new DatabaseHandler(this);
+
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        timeoutput = Integer.parseInt(preferences.getString(getString(R.string.pr_timer_output),"2"));
+
+        for(TimeData data:database.getLaps()) {
+            index++;
+            arrayAdapter.add(index+". "+data.getId()+" - "+data.getNumber()+" - "
+                    +format(data.getLap_time())+" - "+format(data.getAll_time())+" ");
+
+        }
 
         listView.setAdapter(arrayAdapter);
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -66,9 +83,16 @@ public class TimeCounter extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (isStarted) {
-                    if (Base == 0)
-                        mChronometer.setBase(SystemClock.elapsedRealtime());
-                    else mChronometer.setBase(SystemClock.elapsedRealtime()-(SystemClock.elapsedRealtime()-Base));  // DEBUG comment
+
+                    long b = SystemClock.elapsedRealtime();
+                    if (stoptime == 0) {
+                        mChronometer.setBase(b);
+                        base=b;
+                    }
+                    else {
+                        base=mChronometer.getBase()+(b-stoptime);
+                        mChronometer.setBase(base);
+                        }
                     mChronometer.start();
                     button_start.setText(R.string.stop);
 
@@ -88,7 +112,7 @@ public class TimeCounter extends AppCompatActivity {
                     timer.schedule(timerTask, 10L, 30L);
                     isStarted = false;
                 } else {
-                    Base = mChronometer.getBase();
+                    stoptime = SystemClock.elapsedRealtime();
                     mChronometer.getOnChronometerTickListener().onChronometerTick(mChronometer);
                     mChronometer.stop();
                     timerTask.cancel();
@@ -101,9 +125,11 @@ public class TimeCounter extends AppCompatActivity {
         button_lap.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                arrayAdapter.insert(index+".  "+mChronometer.getText().toString(),0);
-                index++;
 
+                database.addLap(new TimeData(index,(SystemClock.elapsedRealtime()
+                        -mChronometer.getBase()),mChronometer.getBase()));
+                arrayAdapter.insert(index + ".  " + mChronometer.getText().toString(), 0);
+                index++;
                 Log.d(TAG, Long.toString(Thread.currentThread().getId()));
                 }
         });
@@ -111,10 +137,10 @@ public class TimeCounter extends AppCompatActivity {
         button_reset.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Base = 0;
+                stoptime = 0;
                 mChronometer.setBase(SystemClock.elapsedRealtime());
                 mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
-                Log.d(TAG, Long.toString(Thread.currentThread().getId()));
+                Log.d(TAG, Long.toString(Thread.currentThread().getId())+"Curent thread");
             }
         });
 
@@ -132,7 +158,6 @@ public class TimeCounter extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
         timeoutput = Integer.parseInt(prefs.getString(getString(R.string.pr_timer_output),"2"));
         mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
     }
@@ -146,6 +171,7 @@ public class TimeCounter extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        menu.add(0,6565456,0,"Копіювати базу даних");
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -164,6 +190,9 @@ public class TimeCounter extends AppCompatActivity {
                 intent.setClass(this,PreferencesActivity.class);
                 startActivity(intent);
                 break;
+            case 6565456:
+                database.exportDB();
+
             default:
             return false;
         }
