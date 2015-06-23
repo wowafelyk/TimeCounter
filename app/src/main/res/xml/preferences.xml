@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <PreferenceCategory android:title="@string/display">
+        <ListPreference
+            android:key="@string/pr_timer_output"
+            android:title="@string/time_output"
+            android:summary="@string/time_output_select"
+            android:defaultValue="2"
+            android:entries="@array/timer_output"
+            android:entryValues="@array/timer_output_int"
+            android:dialogTitle="@string/time_output_select"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/color">
+
+            <Preference android:key="@string/pr_textcolor"
+            android:title="@string/color_select"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,11 +1,12 @@
 package com.example.fenix.timecounter;
 
 
-import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,9 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.ListView;
-import android.content.Context;
 
-import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,12 +27,13 @@ public class TimeCounter extends AppCompatActivity {
     private Handler mHandler = new Handler();
     private Timer timer = new Timer();
     private TimerTask timerTask;
+    private Chronometer mChronometer;
+    private SharedPreferences preferences;
     private static final String TAG = "Time";
     private int msecond[] = {1000, 100, 10, 1};    //select start output timer
-    private int timeindex = 2;
+    private int timeoutput;
     private int index=1;
     private long Base = 0;
-    //private LinkedList<String> linkedList = new LinkedList<>();
     private ArrayAdapter<String> arrayAdapter;
 
     @Override
@@ -41,7 +41,7 @@ public class TimeCounter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer_layout);
 
-        final Chronometer mChronometer = (Chronometer) findViewById(R.id.chronometer);
+        mChronometer = (Chronometer) findViewById(R.id.chronometer);
         final Button button_start = (Button) findViewById(R.id.button_start);
         final Button button_lap = (Button) findViewById(R.id.button_lap);
         final Button button_reset = (Button) findViewById(R.id.button_reset);
@@ -55,8 +55,10 @@ public class TimeCounter extends AppCompatActivity {
 
 
         listView.setAdapter(arrayAdapter);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        timeoutput = Integer.parseInt(preferences.getString(getString(R.string.pr_timer_output),"2"));
         //setContentView(listView);
-        mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeindex]);
+
 
 
         button_start.setOnClickListener(new OnClickListener() {
@@ -66,7 +68,7 @@ public class TimeCounter extends AppCompatActivity {
                 if (isStarted) {
                     if (Base == 0)
                         mChronometer.setBase(SystemClock.elapsedRealtime());
-                    else mChronometer.setBase(Base);  // DEBUG comment
+                    else mChronometer.setBase(SystemClock.elapsedRealtime()-(SystemClock.elapsedRealtime()-Base));  // DEBUG comment
                     mChronometer.start();
                     button_start.setText(R.string.stop);
 
@@ -111,7 +113,7 @@ public class TimeCounter extends AppCompatActivity {
             public void onClick(View v) {
                 Base = 0;
                 mChronometer.setBase(SystemClock.elapsedRealtime());
-                mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeindex]);
+                mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
                 Log.d(TAG, Long.toString(Thread.currentThread().getId()));
             }
         });
@@ -126,6 +128,20 @@ public class TimeCounter extends AppCompatActivity {
         });
     }
 
+   @Override
+    public void onResume(){
+        super.onResume();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        timeoutput = Integer.parseInt(prefs.getString(getString(R.string.pr_timer_output),"2"));
+        mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -142,8 +158,14 @@ public class TimeCounter extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                Intent intent = new Intent();
+                intent.setClass(this,PreferencesActivity.class);
+                startActivity(intent);
+                break;
+            default:
+            return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -159,20 +181,20 @@ public class TimeCounter extends AppCompatActivity {
         String mm = m < 10 ? "0" + m : m + "";
         String ss = s < 10 ? "0" + s : s + "";
         String mS;
-        switch (msecond[timeindex]) {
+        switch (msecond[timeoutput]) {
             case 1:
-                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeindex];
+                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
                 mS = ms < 10 ? "00" + ms : (ms < 100 ? "0" + ms : ms + "");  // for time output 00:00:00.000
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
             case 10:
-                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeindex];
+                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
                 mS = ms < 10 ? "0" + ms : ms + "";  // for time output 00:00:00.00
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
             case 100:
-                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeindex];
-                mS = ms < 10 ? "00" + ms : (ms < 100 ? "0" + ms : ms + "");  // for time output 00:00:00.0
+                ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
+                mS = ms + "";  // for time output 00:00:00.0
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
             default:

@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="false"
-    android:id="@+id/scrollView"
-    android:minHeight="600dp">
-    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fffffd2a"
-        tools:context=".Main"
-        android:id="@+id/realativLayout">
+        tools:context=".Main">
 
         <Chronometer
             android:id="@+id/chronometer"
@@ -19,83 +12,79 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="@dimen/Margin_16_dp"
             android:format="00:00:00"
-            android:textSize="36sp"
-            android:gravity="center_horizontal" />
+            android:textSize="36sp" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/chronometer"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35sp"
-            android:orientation="horizontal">
+            android:layout_marginTop="@dimen/Margin_16_dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/Margin_5_dp"
+            android:layout_marginRight="@dimen/Margin_5_dp">
 
             <Button
                 android:id="@+id/button_start"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/Margin_16_dp"
-                android:layout_weight="0.5"
                 android:width="120dp"
                 android:height="70dp"
                 android:background="@drawable/button_background"
                 android:padding="5dp"
                 android:text="@string/start"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/button_lap"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/Margin_16_dp"
-                android:layout_marginRight="@dimen/Margin_16_dp"
-                android:layout_weight="0.5"
+                android:layout_marginLeft="@dimen/Margin_5_dp"
+                android:layout_marginRight="@dimen/Margin_5_dp"
                 android:width="120dp"
                 android:height="70dp"
                 android:background="@drawable/button_background"
                 android:padding="5dp"
                 android:text="@string/lap_time"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/button_reset"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/Margin_16_dp"
-                android:layout_weight="0.5"
                 android:width="120dp"
                 android:height="70dp"
                 android:background="@drawable/button_background"
                 android:padding="5dp"
                 android:text="@string/reset"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                android:layout_weight="1" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="false"
-            android:layout_below="@+id/linearLayout"
-            android:background="#fffffd2a"
-            android:cacheColorHint="#fffffd2a"
-            android:scrollingCache="true"
-            android:textFilterEnabled="false"
-            android:visibility="visible"
-            android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp" />
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerInParent="true"
+        android:textFilterEnabled="false"
+        android:layout_margin="5dp"
+        android:background="#fffffd2a"
+        android:visibility="visible"
+        android:cacheColorHint="#fffffd2a"
+        android:scrollingCache="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentLeft="false" />
 
-    </RelativeLayout>
-</ScrollView>
+</RelativeLayout>
+
 
 

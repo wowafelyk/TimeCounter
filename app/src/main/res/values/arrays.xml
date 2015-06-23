@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="timer_output">
+        <item>00:00:00</item>
+        <item>00:00:00.0</item>
+        <item>00:00:00.00</item>
+        <item>00:00:00.000</item>
+    </string-array>
+    <string-array name="timer_output_int">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    </resources>
