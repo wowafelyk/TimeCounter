@@ -1,5 +1,11 @@
 package com.example.fenix.timecounter;
 
+/**
+ * Main app activity.
+ *
+ * @version 1.0 25.06.2015
+ * @autor Felyk Volodymyr
+ */
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,147 +37,225 @@ public class TimeCounter extends AppCompatActivity {
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private Chronometer mChronometer;
-    private SharedPreferences preferences;
+    private SharedPreferences defaultPreferences,prefs;
     private DatabaseHandler database;
+    private Bundle mBundle;
+    private Button button_start;
+    private Button button_lap;
+    private Button button_reset;
+    private ListView listView;
     private int msecond[] = {1000, 100, 10, 1};    //select start output timer
     private int timeoutput;
-    private int index=0;
-    private long base = 0;
-    private long stoptime;
+    private int index = 0;
+    private long lapbase = 0;                      //for saving single lap
+    private long base = 0;                         //for start time
+    private long stoptime = 0;                         //for saving stop time
     private ArrayAdapter<String> arrayAdapter;
+
+    private static final int DROP = 15;
+    private static final int EXPORTDB = 16;
+    private static final String PREFS_FILE = "myPrefsFile";
     public static final String TAG = "Time";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.timer_layout);
 
         mChronometer = (Chronometer) findViewById(R.id.chronometer);
-        final Button button_start = (Button) findViewById(R.id.button_start);
-        final Button button_lap = (Button) findViewById(R.id.button_lap);
-        final Button button_reset = (Button) findViewById(R.id.button_reset);
-        final ListView listView = (ListView) findViewById(R.id.listView);
+        button_start = (Button) findViewById(R.id.button_start);
+        button_lap = (Button) findViewById(R.id.button_lap);
+        button_reset = (Button) findViewById(R.id.button_reset);
+        listView = (ListView) findViewById(R.id.listView);
         arrayAdapter = new ArrayAdapter<String>(this, R.layout.item1);
 
 
-
-
-
-
-        Log.d(TAG, Long.toString(Thread.currentThread().getId())+" = Theread id");
+        Log.d(TAG, Long.toString(Thread.currentThread().getId()) + " = Theread id");
         database = new DatabaseHandler(this);
 
+        defaultPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        timeoutput = Integer.parseInt(defaultPreferences.getString(getString(R.string.pr_timer_output), "2"));
+        chronometerInit();
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        timeoutput = Integer.parseInt(preferences.getString(getString(R.string.pr_timer_output),"2"));
-
-        for(TimeData data:database.getLaps()) {
+        for (TimeData data : database.getLaps()) {
             index++;
-            arrayAdapter.add(index+". "+data.getId()+" - "+data.getNumber()+" - "
-                    +format(data.getLap_time())+" - "+format(data.getAll_time())+" ");
-
+            arrayAdapter.add(data.getId() + ". " + format(data.getLap_time())
+                    + " - " + format(data.getAll_time()) + " ");
         }
 
         listView.setAdapter(arrayAdapter);
-        preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        timeoutput = Integer.parseInt(preferences.getString(getString(R.string.pr_timer_output),"2"));
-        //setContentView(listView);
 
 
 
-        button_start.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                if (isStarted) {
+    button_start.setOnClickListener(new
 
-                    long b = SystemClock.elapsedRealtime();
-                    if (stoptime == 0) {
-                        mChronometer.setBase(b);
-                        base=b;
-                    }
-                    else {
-                        base=mChronometer.getBase()+(b-stoptime);
-                        mChronometer.setBase(base);
-                        }
-                    mChronometer.start();
-                    button_start.setText(R.string.stop);
+    OnClickListener() {
+        @Override
+        public void onClick (View v){
 
-                    timerTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            mHandler.post((new Runnable() {
-                                @Override
-                                public void run() {
-                                    mChronometer.getOnChronometerTickListener().
-                                            onChronometerTick(mChronometer);
-                                }
-                            }));
+            if (isStarted) {
 
-                        }
-                    };
-                    timer.schedule(timerTask, 10L, 30L);
-                    isStarted = false;
+                long rt = SystemClock.elapsedRealtime();
+                if (stoptime == 0) {
+                    mChronometer.setBase(rt);
+                    base = rt;
+                    lapbase = rt;
                 } else {
-                    stoptime = SystemClock.elapsedRealtime();
-                    mChronometer.getOnChronometerTickListener().onChronometerTick(mChronometer);
-                    mChronometer.stop();
-                    timerTask.cancel();
-                    button_start.setText(R.string.start);
-                    isStarted = true;
+                    base = base + (rt - stoptime);
+                    lapbase = lapbase + (rt - stoptime);
+                    mChronometer.setBase(base);
                 }
-            }
-        });
-
-        button_lap.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                database.addLap(new TimeData(index,(SystemClock.elapsedRealtime()
-                        -mChronometer.getBase()),mChronometer.getBase()));
-                arrayAdapter.insert(index + ".  " + mChronometer.getText().toString(), 0);
-                index++;
-                Log.d(TAG, Long.toString(Thread.currentThread().getId()));
-                }
-        });
-
-        button_reset.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                button_start.setText(R.string.stop);
                 stoptime = 0;
-                mChronometer.setBase(SystemClock.elapsedRealtime());
-                mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
-                Log.d(TAG, Long.toString(Thread.currentThread().getId())+"Curent thread");
+                isStarted = false;
+                chronometerStart();
+            } else {
+                stoptime = SystemClock.elapsedRealtime();
+                mChronometer.getOnChronometerTickListener().onChronometerTick(mChronometer);
+                chronometerStop();
+                button_start.setText(R.string.start);
+                isStarted = true;
             }
-        });
-
-
-        mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer cArg) {
-                long time = SystemClock.elapsedRealtime() - cArg.getBase();
-                cArg.setText(format(time));
-            }
-        });
+        }
     }
 
-   @Override
-    public void onResume(){
+    );
+
+    button_lap.setOnClickListener(new
+
+    OnClickListener() {
+        @Override
+        public void onClick (View v){
+            index++;
+            long realtime = SystemClock.elapsedRealtime();
+            long laptime, alltime;
+            if (base != 0) {
+                alltime = realtime - base;          //collective time of several laps
+                if (stoptime == 0) {
+                    Log.d(TAG, Long.toString(lapbase) + " = lapbase stoptime==0");
+                    Log.d(TAG, Long.toString(realtime) + " = realtime stoptime==0");
+                    laptime = realtime - lapbase;       //time of single lap
+                    lapbase = realtime;
+                    Log.d(TAG, Long.toString(laptime) + " = laptime stoptime==0");
+                } else {
+                    Log.d(TAG, Long.toString(lapbase) + " = lapbase stoptime!=0");
+
+                    Log.d(TAG, Long.toString(realtime) + " = realtime stoptime!=0");
+                    laptime = stoptime - lapbase;                     //time of single lap
+                    lapbase = stoptime;
+                    Log.d(TAG, Long.toString(laptime) + " = laptime stoptime!=0");
+                }
+            } else {
+                laptime = 0;
+                alltime = 0;                  //collective time of several laps
+            }
+
+            database.addLap(new TimeData(index, laptime, alltime));
+            arrayAdapter.insert(index + ". " + format(laptime) + " - " + format(alltime), 0);
+
+        }
+    }
+
+    );
+
+    button_reset.setOnClickListener(new
+
+    OnClickListener() {
+        @Override
+        public void onClick (View v){
+            stoptime = 0;
+            lapbase = 0;
+            base = 0;
+            isStarted = true;
+            chronometerStop();
+            button_start.setText(R.string.start);
+            mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
+            Log.d(TAG, Long.toString(Thread.currentThread().getId()) + "Curent thread");
+        }
+    }
+
+    );
+
+
+    mChronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener()
+
+    {
+        @Override
+        public void onChronometerTick (Chronometer cArg){
+        long time = SystemClock.elapsedRealtime() - cArg.getBase();
+            cArg.setText(format(time));
+
+    }
+    }
+
+    );
+}
+
+
+    @Override
+    public void onResume() {
         super.onResume();
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        timeoutput = Integer.parseInt(prefs.getString(getString(R.string.pr_timer_output),"2"));
+        prefs = getSharedPreferences(PREFS_FILE,0);
+        timeoutput = Integer.parseInt(defaultPreferences.getString(getString(R.string.pr_timer_output), "2"));
         mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putLong(getResources().getString(R.string.bundle_lapBaseTime), lapbase);
+        prefsEditor.putLong(getResources().getString(R.string.bundle_baseTime), base);
+        prefsEditor.putLong(getResources().getString(R.string.bundle_stopTime), stoptime);
+        prefsEditor.putBoolean(getResources().getString(R.string.bundle_isStarted), isStarted);
+        Log.d(TAG, Long.toString(lapbase) + " = lsave");
+        Log.d(TAG, Long.toString(base) + " = bsave");
+        Log.d(TAG, Long.toString(stoptime) + " = stopsave");
+        prefsEditor.commit();
+    }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        prefs = getSharedPreferences(PREFS_FILE,0);
+        lapbase = prefs.getLong(getResources().getString(R.string.bundle_lapBaseTime),0);
+        base = prefs.getLong(getResources().getString(R.string.bundle_baseTime),0);
+        stoptime = prefs.getLong(getResources().getString(R.string.bundle_stopTime),0);
+        isStarted = prefs.getBoolean(getResources().getString(R.string.bundle_isStarted),true);
+        Log.d(TAG, Long.toString(lapbase) + " = lrest");
+        Log.d(TAG, Long.toString(base) + " = brest");
+        Log.d(TAG, Long.toString(stoptime) + " = stoprest");
+        if (base != 0) {
+
+            if (stoptime == 0) {
+                mChronometer.setBase(base);
+            } else {
+                base = base + (SystemClock.elapsedRealtime() - stoptime);
+                mChronometer.setBase(base);
+                lapbase = lapbase + (SystemClock.elapsedRealtime() - stoptime);
+                mChronometer.getOnChronometerTickListener().onChronometerTick(mChronometer);
+            }
+            if (isStarted == false && (stoptime == 0)) {
+                Log.d(TAG, "is started");
+                chronometerStart();
+                button_start.setText(R.string.stop);
+            }
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menu.add(0,6565456,0,"Копіювати базу даних");
+        menu.add(0, EXPORTDB, 0, "Копіювати базу даних");
+        menu.add(0, DROP, 0, "Видалити таблицю");
+
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -187,19 +271,23 @@ public class TimeCounter extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 Intent intent = new Intent();
-                intent.setClass(this,PreferencesActivity.class);
+                intent.setClass(this, PreferencesActivity.class);
                 startActivity(intent);
                 break;
-            case 6565456:
+            case EXPORTDB:
                 database.exportDB();
-
+                break;
+            case DROP:
+                database.drop();
+                break;
             default:
-            return false;
+                return false;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /* Used for formatting chronometer output */
     private String format(long time) {
         String cArg;
         int h = (int) (time / 3600000);
@@ -211,26 +299,79 @@ public class TimeCounter extends AppCompatActivity {
         String ss = s < 10 ? "0" + s : s + "";
         String mS;
         switch (msecond[timeoutput]) {
-            case 1:
+            case 1:             // for time output 00:00:00.000
                 ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
-                mS = ms < 10 ? "00" + ms : (ms < 100 ? "0" + ms : ms + "");  // for time output 00:00:00.000
+                mS = ms < 10 ? "00" + ms : (ms < 100 ? "0" + ms : ms + "");
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
-            case 10:
+            case 10:            // for time output 00:00:00.00
                 ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
-                mS = ms < 10 ? "0" + ms : ms + "";  // for time output 00:00:00.00
+                mS = ms < 10 ? "0" + ms : ms + "";
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
-            case 100:
+            case 100:           // for time output 00:00:00.0
                 ms = (int) (time - h * 3600000 - m * 60000 - s * 1000) / msecond[timeoutput];
-                mS = ms + "";  // for time output 00:00:00.0
+                mS = ms + "";
                 cArg = (hh + ":" + mm + ":" + ss + "." + mS);
                 break;
-            default:
+            default:            // for time output 00:00:00
                 cArg = (hh + ":" + mm + ":" + ss);
                 break;
         }
         return cArg;
     }
+
+
+    /** Method used for initialisation (TimerTask)timerTask
+     *
+     *  Without using this metod befor metods chronometerStart() or chronometerStop
+     *  they throws java.lang.NullPointerException
+     *  Methods chronometerStart(), chronometerStop, chronometerInit() made for
+     *  readability and ease of use encapsulated methods
+     */
+    private void chronometerInit() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.post((new Runnable() {
+                    @Override
+                    public void run() {
+                        mChronometer.getOnChronometerTickListener().
+                                onChronometerTick(mChronometer);
+                    }
+                }));
+            }
+        };
+    };
+
+    /**
+     * Method for start timer
+     * used after chronometerInit()
+     * */
+    private void chronometerStart() {
+        chronometerInit();
+        mChronometer.start();
+        timer.schedule(timerTask, 0L, 23L);
+    };
+
+    /**
+     * Method for stop timer
+     * used after chronometerInit()
+     */
+    private void chronometerStop() {
+        timerTask.cancel();
+
+               if(stoptime==0) mHandler.postDelayed((new Runnable() {
+                    @Override
+                    public void run() {
+                        mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
+                    }
+                }),30L);
+
+        mChronometer.stop();
+
+    };
+
+
 }
 

@@ -3,7 +3,11 @@
     <string name="pr_background_color">BackgroundColor</string>
     <string name="pr_timer_output">PreferencesTimerOutput</string>
     <string name="pr_color">Color</string>
+
+    <string name="bundle_stopTime">stopTime</string>
     <string name="bundle_baseTime">BaseT</string>
+    <string name="bundle_lapBaseTime">lapBaseT</string>
+    <string name="bundle_isStarted">isStarted</string>
 
     <string name="color_dialog_ARGB">ARGB</string>
     <string name="color_dialog_Alfa">Насиченість кольору(ALfa)</string>
