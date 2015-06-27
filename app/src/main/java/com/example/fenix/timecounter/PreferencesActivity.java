@@ -1,6 +1,7 @@
 package com.example.fenix.timecounter;
 
 import android.os.Bundle;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 
 /**
@@ -14,9 +15,19 @@ import android.preference.PreferenceActivity;
  * */
 @SuppressWarnings("deprecation from api_11 (HONEYCOMB)")
 public class PreferencesActivity extends PreferenceActivity {
+    Preference dialogPreference;
     @Override
     public void onCreate(Bundle savedInstanseState){
         super.onCreate(savedInstanseState);
         addPreferencesFromResource(R.xml.preferences);
+        dialogPreference = (Preference)getPreferenceScreen().findPreference("@string/pr_textcolor");
+        dialogPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                return true;
+            }
+        });
     }
+
 }

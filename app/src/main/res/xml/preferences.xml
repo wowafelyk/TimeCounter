@@ -17,5 +17,11 @@
             android:title="@string/color_select"/>
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/color">
+
+        <Preference android:key="@string/pr_background_color"
+            android:title="@string/color_select"/>
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

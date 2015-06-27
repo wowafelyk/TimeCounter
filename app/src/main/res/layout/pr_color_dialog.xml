@@ -1,243 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/AlertDialog.AppCompat.Light"
-    android:orientation="vertical"
-    android:id="@+id/pr_color_dialog">
+    style="@style/AlertDialog.AppCompat.Light">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/pr_color_dialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/color_select"
-        android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/Margin_16_dp"
-        android:textColor="@color/sysBlack" />
+        android:orientation="vertical">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ToggleButton
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton1"
-            android:layout_weight="1"
-            android:background="@color/sysBlack"
-            android:checked="true"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:textColor="@color/sysWhite" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton2"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:checked="false"
-            android:background="@color/sysBlue" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton3"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:background="@color/sysCyan" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton4"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:background="@color/sysDkGray" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/toggleButton5"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:layout_weight="1"
-            android:background="@color/sysGray"/>
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton6"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:layout_weight="1"
-            android:background="@color/sysGreen"/>
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton7"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:layout_weight="1"
-            android:background="@color/sysLtGray"/>
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton8"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:layout_weight="1"
-            android:background="@color/sysMagenta"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton9"
-            android:layout_weight="1"
-            android:checked="false"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:background="@color/sysRed" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton10"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:checked="false"
-            android:background="@color/sysWhite" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton11"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:background="@color/sysYellow" />
-
-        <ToggleButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="New ToggleButton"
-            android:id="@+id/toggleButton12"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/Margin_5_dp"
-            android:textOff="ARGB"
-            android:textOn="ARGB" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/Margin_5_dp"
+            android:text="@string/color_select"
+            android:textAppearance="@android:style/Theme.Translucent"
+            android:textColor="@color/sysBlack"
+            android:textStyle="bold"
+            android:textSize="26sp"
+            android:layout_marginBottom="@dimen/Margin_5_dp" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
+            <ToggleButton
+                android:id="@+id/toggleButton1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/color_dialog_Alfa"
-                android:id="@+id/textView2"
+                android:layout_margin="@dimen/Margin_5_dp"
                 android:layout_weight="1"
-                android:textColor="@color/sysBlack" />
+                android:background="@color/sysBlack"
+                android:checked="true"
+                android:text="New ToggleButton"
+                android:textColor="@color/sysWhite"
+                android:elegantTextHeight="false"
+                android:freezesText="false" />
 
-            <SeekBar
+            <ToggleButton
+                android:id="@+id/toggleButton2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/seekBar"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/color_dialog_red"
-                android:id="@+id/textView3"
+                android:layout_margin="@dimen/Margin_5_dp"
                 android:layout_weight="1"
-                android:textColor="@color/sysBlack" />
-            <SeekBar
+                android:background="@color/sysBlue"
+                android:checked="false"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/seekBar3"
-                android:layout_weight="1" />
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysCyan"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysDkGray"
+                android:text="New ToggleButton" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
+            <ToggleButton
+                android:id="@+id/toggleButton5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/color_dialog_green"
-                android:id="@+id/textView4"
+                android:layout_margin="@dimen/Margin_5_dp"
                 android:layout_weight="1"
-                android:textColor="@color/sysBlack" />
+                android:background="@color/sysGray" />
 
-            <SeekBar
+            <ToggleButton
+                android:id="@+id/toggleButton6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/seekBar3"
-                android:layout_weight="1" />
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysGreen"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysLtGray"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysMagenta"
+                android:text="New ToggleButton" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <TextView
+            <ToggleButton
+                android:id="@+id/toggleButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/color_dialog_blue"
-                android:id="@+id/textView5"
+                android:layout_margin="@dimen/Margin_5_dp"
                 android:layout_weight="1"
-                android:textColor="@color/sysBlack" />
+                android:background="@color/sysRed"
+                android:checked="false"
+                android:text="New ToggleButton" />
 
-            <SeekBar
+            <ToggleButton
+                android:id="@+id/toggleButton13"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/seekBar4"
-                android:layout_weight="1" />
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysWhite"
+                android:checked="false"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysYellow"
+                android:text="New ToggleButton" />
+
+            <ToggleButton
+                android:id="@+id/toggleButton15"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:background="@color/sysTransparent"
+                android:text="New ToggleButton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/Margin_5_dp"
+            android:layout_marginRight="@dimen/Margin_5_dp"
+            android:orientation="horizontal"
+            android:baselineAligned="false">
+
+            <ToggleButton
+                android:id="@+id/toggleButton12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/Margin_5_dp"
+                android:layout_marginRight="@dimen/Margin_5_dp"
+                android:layout_weight="1"
+                android:checked="false"
+                android:textOff="@string/color_dialog_ARGB_OFF"
+                android:textOn="@string/color_dialog_ARGB_ON" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/Margin_5_dp"
+            android:layout_marginRight="@dimen/Margin_5_dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dialog_Alfa"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/sysBlack" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dialog_red"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/sysBlack" />
+
+                <SeekBar
+                    android:id="@+id/seekBar3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dialog_green"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/sysBlack" />
+
+                <SeekBar
+                    android:id="@+id/seekBar3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/color_dialog_blue"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/sysBlack" />
+
+                <SeekBar
+                    android:id="@+id/seekBar4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>

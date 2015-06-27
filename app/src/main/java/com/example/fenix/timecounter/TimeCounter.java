@@ -194,44 +194,26 @@ public class TimeCounter extends AppCompatActivity {
     );
 }
 
+    @Override
+    protected void onStart(){
+        super.onStart();
+        Log.d(TAG, "onStart");
+
+    }
 
     @Override
-    public void onResume() {
+    protected void onResume() {
+        Log.d(TAG, "On resume");
         super.onResume();
         prefs = getSharedPreferences(PREFS_FILE,0);
         timeoutput = Integer.parseInt(defaultPreferences.getString(getString(R.string.pr_timer_output), "2"));
-        mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        SharedPreferences.Editor prefsEditor = prefs.edit();
-        prefsEditor.putLong(getResources().getString(R.string.bundle_lapBaseTime), lapbase);
-        prefsEditor.putLong(getResources().getString(R.string.bundle_baseTime), base);
-        prefsEditor.putLong(getResources().getString(R.string.bundle_stopTime), stoptime);
-        prefsEditor.putBoolean(getResources().getString(R.string.bundle_isStarted), isStarted);
-        Log.d(TAG, Long.toString(lapbase) + " = lsave");
-        Log.d(TAG, Long.toString(base) + " = bsave");
-        Log.d(TAG, Long.toString(stoptime) + " = stopsave");
-        prefsEditor.commit();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
         prefs = getSharedPreferences(PREFS_FILE,0);
+        mChronometer.setText(getResources().getStringArray(R.array.timer_output)[timeoutput]);
+
         lapbase = prefs.getLong(getResources().getString(R.string.bundle_lapBaseTime),0);
         base = prefs.getLong(getResources().getString(R.string.bundle_baseTime),0);
-        stoptime = prefs.getLong(getResources().getString(R.string.bundle_stopTime),0);
-        isStarted = prefs.getBoolean(getResources().getString(R.string.bundle_isStarted),true);
-        Log.d(TAG, Long.toString(lapbase) + " = lrest");
-        Log.d(TAG, Long.toString(base) + " = brest");
-        Log.d(TAG, Long.toString(stoptime) + " = stoprest");
+        stoptime = prefs.getLong(getResources().getString(R.string.bundle_stopTime), 0);
+        isStarted = prefs.getBoolean(getResources().getString(R.string.bundle_isStarted), true);
         if (base != 0) {
 
             if (stoptime == 0) {
@@ -243,11 +225,47 @@ public class TimeCounter extends AppCompatActivity {
                 mChronometer.getOnChronometerTickListener().onChronometerTick(mChronometer);
             }
             if (isStarted == false && (stoptime == 0)) {
-                Log.d(TAG, "is started");
                 chronometerStart();
                 button_start.setText(R.string.stop);
             }
         }
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "oaPause");
+        super.onPause();
+        SharedPreferences.Editor prefsEditor = prefs.edit();
+        prefsEditor.putLong(getResources().getString(R.string.bundle_lapBaseTime), lapbase);
+        prefsEditor.putLong(getResources().getString(R.string.bundle_baseTime), base);
+        prefsEditor.putLong(getResources().getString(R.string.bundle_stopTime), stoptime);
+        prefsEditor.putBoolean(getResources().getString(R.string.bundle_isStarted), isStarted);
+        prefsEditor.commit();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d(TAG, "onSave...");
+        super.onSaveInstanceState(outState);
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
